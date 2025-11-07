@@ -1,4 +1,3 @@
-
 export enum Page {
   Store = 'STORE',
   Upcoming = 'UPCOMING',
@@ -28,4 +27,16 @@ export interface MagazineArticle {
   subtitle: string;
   imageUrl: string;
   type: 'Photoshoot' | 'Lineup' | 'Teaser';
+}
+
+export type EditableItem = Product | UpcomingItem | MagazineArticle;
+
+// New types for Admin architecture
+export type Role = 'Admin' | 'Senior Admin';
+
+export interface AdminUser {
+  id: number;
+  name: string;
+  email: string;
+  role: Role;
 }

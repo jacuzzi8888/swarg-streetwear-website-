@@ -1,5 +1,5 @@
 
-import type { Product, UpcomingItem, MagazineArticle } from './types';
+import type { Product, UpcomingItem, MagazineArticle, AdminUser } from './types';
 
 export const PRODUCTS: Product[] = [
   { id: 1, name: 'Acid Wash Hoodie', category: 'Hoodies', price: 120, imageUrl: 'https://picsum.photos/seed/prod1/600/800' },
@@ -27,4 +27,9 @@ export const MAGAZINE_ARTICLES: MagazineArticle[] = [
   { id: 2, title: 'Current Lineup: SS24', subtitle: 'Explore the pieces defining this season.', type: 'Lineup', imageUrl: 'https://picsum.photos/seed/mag2/1200/800' },
   { id: 3, title: 'Behind the Seams', subtitle: 'A teaser for the upcoming FW24 collection.', type: 'Teaser', imageUrl: 'https://picsum.photos/seed/mag3/1200/800' },
   { id: 4, title: 'Concrete Jungle', subtitle: 'Editorial shot in the heart of the city.', type: 'Photoshoot', imageUrl: 'https://picsum.photos/seed/mag4/1200/800' },
+];
+
+export const ADMIN_USERS: AdminUser[] = [
+    { id: 1, name: 'Alex Doe', email: 'senior.admin@aura.com', role: 'Senior Admin' },
+    { id: 2, name: 'Blake Smith', email: 'admin@aura.com', role: 'Admin' },
 ];

@@ -26,11 +26,13 @@ export const UpcomingItemCard: React.FC<UpcomingItemCardProps> = ({ item }) => {
       <div className="p-6 flex flex-col flex-grow">
         <h3 className="text-lg font-bold text-white">{item.name}</h3>
         <p className="mt-2 text-sm text-gray-400 flex-grow">{item.description}</p>
-        <button 
-          onClick={handleWaitlist}
-          className="mt-6 w-full bg-cyan-500 text-black py-2 px-4 rounded-md text-sm font-bold transition-all duration-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-black">
-          Join Waitlist
-        </button>
+        <div className="mt-6 flex items-center space-x-2">
+            <button 
+              onClick={handleWaitlist}
+              className="w-full bg-cyan-500 text-black py-2 px-4 rounded-md text-sm font-bold transition-all duration-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-black">
+              Join Waitlist
+            </button>
+        </div>
       </div>
     </div>
   );

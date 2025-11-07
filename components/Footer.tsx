@@ -11,12 +11,18 @@ export const Footer: React.FC = () => {
             <h2 className="text-xl font-black text-white tracking-widest">AURA</h2>
             <p className="text-gray-500 text-sm mt-1">&copy; {new Date().getFullYear()} AURA Industries. All Rights Reserved.</p>
           </div>
-          <div className="flex space-x-6">
+          <div className="flex items-center space-x-6">
             {socialLinks.map((link) => (
               <a key={link} href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
                 {link}
               </a>
             ))}
+             <a
+              href="/admin/login"
+              className="border-2 px-3 py-1 rounded-md text-xs font-bold transition-all duration-300 border-gray-700 text-gray-400 hover:border-white hover:text-white"
+            >
+              Admin Login
+            </a>
           </div>
         </div>
       </div>

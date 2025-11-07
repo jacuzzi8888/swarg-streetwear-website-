@@ -21,17 +21,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
 
          {/* Visualize Button Overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
-            <button
-                onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onVisualize(product);
-                }}
-                className="relative z-10 p-3 bg-white/20 text-white rounded-full opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300 backdrop-blur-sm hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                aria-label={`Visualize ${product.name} on a model`}
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
-            </button>
+            <div className="relative group/btn flex flex-col items-center">
+                <button
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onVisualize(product);
+                    }}
+                    className="relative z-10 p-3 bg-white/20 text-white rounded-full opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300 backdrop-blur-sm hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                    aria-label={`Visualize ${product.name} on a model`}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+                </button>
+                <span className="absolute top-full mt-2 w-max whitespace-nowrap bg-gray-900 text-white text-xs rounded py-1 px-3 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
+                    AI Try-On: Visualize on a model
+                </span>
+            </div>
         </div>
       </div>
       <div className="mt-4 flex flex-col flex-grow">
@@ -44,7 +49,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
             </div>
             <p className="text-sm font-medium text-gray-300">${product.price}</p>
         </div>
-        <div className="mt-auto pt-4">
+        <div className="mt-auto pt-4 flex items-center space-x-2">
             <button
                 onClick={(e) => {
                     e.preventDefault(); // Prevent the link wrapper from navigating
