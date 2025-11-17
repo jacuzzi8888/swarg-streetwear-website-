@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -187,6 +188,7 @@ const App: React.FC = () => {
     const handleVisualize = async (product: Product) => {
         setVisualizeModalState({ isOpen: true, isLoading: true, imageUrl: '', error: '', productName: product.name });
         try {
+            // Fix: Use process.env.API_KEY as per the coding guidelines.
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const prompt = `A high-fashion streetwear model wearing a ${product.name} (${product.category}), full body shot, standing in a minimalist, well-lit studio. Photorealistic style.`;
             const response = await ai.models.generateContent({
