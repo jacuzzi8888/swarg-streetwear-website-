@@ -6,7 +6,7 @@ import { ProductCard } from './components/ProductCard';
 import { UpcomingItemCard } from './components/UpcomingItemCard';
 import { MagazineArticle } from './components/MagazineArticle';
 import { VisualizeModal } from './components/VisualizeModal';
-import { AdminEditModal } from './components/AdminEditModal';
+import { Hero } from './components/Hero';
 import { Page, type Category, type Product, type UpcomingItem, type MagazineArticle as MagazineArticleType, type EditableItem, type AdminUser } from './types';
 import { PRODUCTS, UPCOMING_ITEMS, MAGAZINE_ARTICLES, ADMIN_USERS } from './constants';
 import { GoogleGenAI, Modality } from '@google/genai';
@@ -49,7 +49,7 @@ const PublicSite: React.FC<{
     return (
         <div className="bg-black min-h-screen text-white">
             <Header currentPage={currentPage} setCurrentPage={setCurrentPage} cartCount={0} />
-            <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
                 {renderPage()}
             </main>
             <Footer />
@@ -77,21 +77,25 @@ const StorePage: React.FC<StorePageProps> = ({ products, onAddToCart, onVisualiz
   
     return (
       <>
-        <div className="text-center">
-            <h1 className="text-4xl font-black tracking-tighter text-white sm:text-5xl md:text-6xl">Latest Collection</h1>
+        {selectedCategory === 'All' && <Hero />}
+        
+        <div className="text-center mb-12">
+            <h1 className="text-4xl font-black tracking-tighter text-white sm:text-5xl md:text-6xl uppercase">
+                {selectedCategory === 'All' ? 'Latest Collection' : selectedCategory}
+            </h1>
             <p className="mt-3 max-w-md mx-auto text-base text-gray-400 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">Explore our curated selection of streetwear essentials.</p>
         </div>
 
-        <div className="my-12">
-            <div className="flex justify-center space-x-2 sm:space-x-4">
+        <div className="mb-16">
+            <div className="flex justify-center flex-wrap gap-2 md:gap-4">
             {categories.map(category => (
                 <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-full transition-colors duration-300 ${
+                className={`px-6 py-2 text-xs sm:text-sm font-bold tracking-widest uppercase rounded-full transition-all duration-300 border-2 ${
                     selectedCategory === category
-                    ? 'bg-white text-black'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    ? 'bg-white text-black border-white'
+                    : 'bg-transparent text-gray-400 border-gray-800 hover:border-gray-500 hover:text-white'
                 }`}
                 >
                 {category}
@@ -100,7 +104,7 @@ const StorePage: React.FC<StorePageProps> = ({ products, onAddToCart, onVisualiz
             </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-12 sm:grid-cols-2 md:gap-x-6 lg:grid-cols-4 xl:gap-x-10">
             {filteredProducts.map(product => (
                 <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} onVisualize={onVisualize} />
             ))}
@@ -111,11 +115,11 @@ const StorePage: React.FC<StorePageProps> = ({ products, onAddToCart, onVisualiz
   
 const UpcomingPage: React.FC<{ items: UpcomingItem[] }> = ({ items }) => (
     <>
-        <div className="text-center">
-            <h1 className="text-4xl font-black tracking-tighter text-white sm:text-5xl md:text-6xl">Coming Soon</h1>
+        <div className="text-center mb-16">
+            <h1 className="text-4xl font-black tracking-tighter text-white sm:text-5xl md:text-6xl uppercase">Coming Soon</h1>
             <p className="mt-3 max-w-md mx-auto text-base text-gray-400 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">Be the first to know about our upcoming drops.</p>
         </div>
-        <div className="mt-12 grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-6 md:gap-10 lg:grid-cols-3">
             {items.map(item => (
                 <UpcomingItemCard key={item.id} item={item} />
             ))}
@@ -125,11 +129,11 @@ const UpcomingPage: React.FC<{ items: UpcomingItem[] }> = ({ items }) => (
 
 const MagazinePage: React.FC<{ articles: MagazineArticleType[] }> = ({ articles }) => (
     <>
-        <div className="text-center">
-            <h1 className="text-4xl font-black tracking-tighter text-white sm:text-5xl md:text-6xl">The Journal</h1>
+        <div className="text-center mb-16">
+            <h1 className="text-4xl font-black tracking-tighter text-white sm:text-5xl md:text-6xl uppercase">The Journal</h1>
             <p className="mt-3 max-w-md mx-auto text-base text-gray-400 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">Inside the world of AURA. Editorials, lookbooks, and behind the scenes.</p>
         </div>
-        <div className="mt-12 grid gap-8 lg:gap-12">
+        <div className="grid gap-8 md:gap-16">
             {articles.map(article => (
                 <MagazineArticle key={article.id} article={article} />
             ))}
@@ -188,13 +192,11 @@ const App: React.FC = () => {
     const handleVisualize = async (product: Product) => {
         setVisualizeModalState({ isOpen: true, isLoading: true, imageUrl: '', error: '', productName: product.name });
         try {
-            // Fix: Use process.env.API_KEY as per the coding guidelines.
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const prompt = `A high-fashion streetwear model wearing a ${product.name} (${product.category}), full body shot, standing in a minimalist, well-lit studio. Photorealistic style.`;
             const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash-image',
+                model: 'gemini-3-flash-preview',
                 contents: { parts: [{ text: prompt }] },
-                config: { responseModalities: [Modality.IMAGE] },
             });
             for (const part of response.candidates[0].content.parts) {
                 if (part.inlineData) {
@@ -251,7 +253,6 @@ const App: React.FC = () => {
             return (
                 <Routes>
                     <Route path="/admin/login" element={<AdminLogin navigate={navigate} />} />
-                    {/* FIX: The nested routing structure was flawed. Flattening the routes and wrapping each protected component individually ensures authentication is checked correctly for each admin page. */}
                     <Route path="/admin/dashboard" element={<ProtectedRoute navigate={navigate}><AdminLayout navigate={navigate}><AdminDashboard {...adminProps} /></AdminLayout></ProtectedRoute>} />
                     <Route path="/admin/products" element={<ProtectedRoute navigate={navigate}><AdminLayout navigate={navigate}><AdminProducts {...adminProps} /></AdminLayout></ProtectedRoute>} />
                     <Route path="/admin/upcoming" element={<ProtectedRoute navigate={navigate}><AdminLayout navigate={navigate}><AdminUpcoming {...adminProps} /></AdminLayout></ProtectedRoute>} />
@@ -268,7 +269,6 @@ const App: React.FC = () => {
         const childrenArray = React.Children.toArray(children);
         const matchedChild = childrenArray.find(child => {
             if (React.isValidElement(child)) {
-                // FIX: Cast child.props to a known type to safely access the 'path' property, resolving a TypeScript error.
                 const childProps = child.props as { path: string };
                 return path === childProps.path || (childProps.path.endsWith('*') && path.startsWith(childProps.path.slice(0, -1)))
             }
@@ -281,7 +281,7 @@ const App: React.FC = () => {
              return null;
         }
 
-        return <>{matchedChild || <p>404 Not Found</p>}</>;
+        return <>{matchedChild || <p className="text-center py-20">404 Not Found</p>}</>;
     };
     const Route: React.FC<{ path: string, element: React.ReactNode, children?: React.ReactNode }> = ({ element, children }) => <>{element}{children}</>;
   
@@ -295,7 +295,6 @@ const App: React.FC = () => {
             error={visualizeModalState.error}
             productName={visualizeModalState.productName}
         />
-        {/* The Admin Edit modal is now managed within the admin pages */}
         {renderContent()}
       </>
     );
